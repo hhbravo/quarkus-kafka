@@ -8,5 +8,6 @@ import java.util.List;
 
 public record OrderRequest(
         @NotNull @Valid ClientDTO client,
-        @NotEmpty @Valid List<OrderItemDTO> items
+        @NotEmpty @Valid List<OrderItemDTO> items,
+        @NotNull @Valid Double total
 ) {}

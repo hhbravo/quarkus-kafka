@@ -5,16 +5,16 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "order_items")
-public class OrderItemEntity {
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     public Long productId;
     public String name;
-    public int quantity;
+    public Integer quantity;
     public String additionalInformation;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    public OrderEntity order;
+    public Order order;
 }

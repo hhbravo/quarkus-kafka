@@ -11,20 +11,20 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-public class OrderEntity extends PanacheEntity {
+public class Order extends PanacheEntity {
 
     public String clientName;
     public String clientAddress;
     public String clientPhone;
     public String clientDocumentNumber;
     public String clientDocumentType;
-
     public String status;
+    public Double total;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<OrderItemEntity> items = new ArrayList<>();
+    public List<OrderItem> items = new ArrayList<>();
 
-    public void addItem(OrderItemEntity item) {
+    public void addItem(OrderItem item) {
         items.add(item);
         item.order = this;
     }

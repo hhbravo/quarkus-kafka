@@ -5,7 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.hans.orders.dto.OrderRequest;
 import org.hans.orders.dto.OrderResponse;
-import org.hans.orders.entity.OrderEntity;
+import org.hans.orders.entity.Order;
 import org.hans.orders.mapper.OrderMapper;
 import org.hans.orders.producer.OrderProducer;
 import org.hans.orders.repository.OrderRepository;
@@ -31,14 +31,10 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderResponse createOrder(OrderRequest request) {
         try {
-            OrderEntity order = mapper.toEntity(request);
-            order.status = "PENDING";
-//            order.items.forEach(item -> {
-//                if (item.status == null) item.status = "PENDING";
-//            });
+            Order order = mapper.toEntity(request);
             repository.persist(order);
             log.info("Order persisted id={}", order.id);
-            producer.sendCreateOrderEventAsync(mapper.toEventPayload(order));
+            producer.send(order);
             return new OrderResponse(order.id, "Order created");
         } catch (Exception e) {
             log.error("Error creating order", e);
