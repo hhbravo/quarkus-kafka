@@ -1,5 +1,7 @@
 package org.hans.delivery.dto;
 
+import io.quarkus.logging.Log;
+
 import java.time.Instant;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class OrderCreatedEvent {
     public Instant createdAt;
 
     public static class Item {
+        public Long id;
         public String name;
         public Integer quantity;
 

@@ -12,12 +12,15 @@ import org.hans.delivery.repository.InventoryRepository;
 import org.hans.delivery.service.DeliveryService;
 import org.hans.delivery.service.DecisionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
-public class OrderConsumer {
+public class DelvieryConsumer {
 
+    private static final Logger log = LoggerFactory.getLogger(DelvieryConsumer.class);
 
-    @Inject ObjectMapper MAPPER;
+    @Inject ObjectMapper objectMapper;
 
     @Inject
     DeliveryOrderRepository orderRepository;
@@ -39,23 +42,23 @@ public class OrderConsumer {
     @Transactional
     public void consume(String payload) {
         try {
-            OrderCreatedEvent event = MAPPER.readValue(payload, OrderCreatedEvent.class);
-            System.out.println("OrderConsumer -> received event for orderId=" + event.id);
+            OrderCreatedEvent event = objectMapper.readValue(payload, OrderCreatedEvent.class);
+            log.info("DelvieryConsumer -> received event for orderId=" + event.id);
 
             if (event.id == null) {
-                System.err.println("OrderConsumer -> missing order id");
+                log.error("DelvieryConsumer -> event id is null, skipping");
                 return;
             }
 
             DeliveryOrder order = orderRepository.findById(event.id);
             if (order == null) {
-                System.err.println("OrderConsumer -> order not found: " + event.id);
+                log.error("DelvieryConsumer -> order not found id=" + event.id);
                 return;
             }
 
             // Idempotency: if not PENDING skip
             if (!"PENDING".equals(order.status)) {
-                System.out.println("OrderConsumer -> skipping order " + order.id + " status=" + order.status);
+                log.error("DelvieryConsumer -> skipping order " + order.id + " status=" + order.status);
                 return;
             }
 

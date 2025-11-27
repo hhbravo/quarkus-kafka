@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Table(name = "delivery_orders")
+@Table(name = "orders")
 public class DeliveryOrder extends PanacheEntity {
 
     public String status;
