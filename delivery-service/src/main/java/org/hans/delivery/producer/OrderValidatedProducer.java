@@ -11,7 +11,7 @@ import org.hans.delivery.dto.OrderValidatedEvent;
 public class OrderValidatedProducer {
 
     @Inject
-    @Channel("events-validated-out")
+    @Channel("order-validated-out")
     Emitter<String> emitter;
 
     @Inject ObjectMapper MAPPER;

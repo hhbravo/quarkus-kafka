@@ -28,7 +28,7 @@ public class OrderProducer {
     OrderMapper orderMapper;
 
     @Inject
-    @Channel("events-out")
+    @Channel("order-create-out")
     Emitter<String> emitter;
 
     private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();

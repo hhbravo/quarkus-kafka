@@ -8,6 +8,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,7 +25,7 @@ public class DeliveryOrder extends PanacheEntity {
     public String documentNumber;
 
     @OneToMany(mappedBy="deliveryOrder", cascade= CascadeType.ALL, orphanRemoval=true)
-    public List<DeliveryOrderItem> items;
+    public List<DeliveryOrderItem> items = new ArrayList<>();
 
     public void addItem(DeliveryOrderItem item) {
         items.add(item);
