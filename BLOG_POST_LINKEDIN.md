@@ -31,7 +31,7 @@ Para demostrar estos conceptos, implementé una Prueba de Concepto (PoC) con dos
 
 - **orders-service**: Microservicio que recibe solicitudes REST para crear órdenes, las persiste en su base de datos y publica eventos cuando se crea una nueva orden.
 
-- **delivery-service**: Microservicio que consume eventos de creación de órdenes, valida el inventario contra su propia base de datos y publica eventos con el resultado de la validación.
+- **stock-service**: Microservicio que consume eventos de creación de órdenes, valida el inventario contra su propia base de datos y publica eventos con el resultado de la validación.
 
 La comunicación entre estos servicios es completamente asíncrona y bidireccional: orders → delivery → orders, todo mediante Kafka.
 
@@ -47,8 +47,8 @@ El flujo completo funciona de la siguiente manera:
 
 1. Un cliente realiza una petición POST a orders-service para crear una orden.
 2. orders-service persiste la orden en su base de datos con estado "PENDING" y publica un evento `OrderCreatedEvent` en el topic `createOrderService`.
-3. delivery-service consume el evento, crea la orden en su propia base de datos (si no existe), valida el inventario y actualiza el estado (ACCEPTED o DENIED).
-4. delivery-service publica un evento `OrderValidatedEvent` en el topic `orderValidated`.
+3. stock-service consume el evento, crea la orden en su propia base de datos (si no existe), valida el inventario y actualiza el estado (ACCEPTED o DENIED).
+4. stock-service publica un evento `OrderValidatedEvent` en el topic `orderValidated`.
 5. orders-service consume el evento de validación y actualiza el estado de la orden en su base de datos.
 
 Este flujo es completamente asíncrono, lo que significa que la respuesta al cliente no espera la validación del inventario, mejorando la experiencia del usuario y la capacidad de respuesta del sistema.
@@ -109,7 +109,7 @@ Bases de Datos Separadas
 Un aspecto crucial de esta arquitectura es que cada microservicio mantiene su propia base de datos:
 
 - **orders-service**: `jdbc:h2:./target/h2db/orders`
-- **delivery-service**: `jdbc:h2:./target/h2db/delivery`
+- **stock-service**: `jdbc:h2:./target/h2db/delivery`
 
 Esta separación permite:
 
@@ -122,7 +122,7 @@ Ventajas de esta Arquitectura
 
 1. **Desacoplamiento Real**: Los servicios no tienen dependencias directas entre sí, solo se comunican mediante eventos.
 
-2. **Escalabilidad Horizontal**: Cada servicio puede escalarse independientemente según su carga específica. Si delivery-service necesita más recursos para validar inventario, podemos escalarlo sin afectar orders-service.
+2. **Escalabilidad Horizontal**: Cada servicio puede escalarse independientemente según su carga específica. Si stock-service necesita más recursos para validar inventario, podemos escalarlo sin afectar orders-service.
 
 3. **Resiliencia**: Si un servicio falla temporalmente, los eventos se almacenan en Kafka y se procesarán cuando el servicio se recupere.
 

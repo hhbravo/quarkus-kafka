@@ -15,7 +15,7 @@ El proyecto está estructurado como un **proyecto multi-módulo Maven** con dos 
   - Publica eventos `OrderCreatedEvent` cuando se crea una orden
   - Consume eventos `OrderValidatedEvent` para actualizar el estado de las órdenes
   
-- **delivery-service**: Microservicio que procesa órdenes para delivery.
+- **stock-service**: Microservicio que procesa órdenes para delivery.
   - Consume eventos de creación de órdenes desde Kafka
   - Realiza validación de inventario
   - Actualiza su propia base de datos
@@ -33,7 +33,7 @@ quarkus-kafka/
 │           ├── java/org/hans/orders/
 │           └── resources/
 │               └── application.properties
-└── delivery-service/          # Módulo del servicio de delivery
+└── stock-service/          # Módulo del servicio de delivery
     ├── pom.xml
     └── src/
         └── main/
@@ -54,7 +54,7 @@ quarkus-kafka/
 
 Cada microservicio tiene su propia base de datos H2 independiente:
 - **orders-service**: `jdbc:h2:./target/h2db/orders`
-- **delivery-service**: `jdbc:h2:./target/h2db/delivery`
+- **stock-service**: `jdbc:h2:./target/h2db/delivery`
 
 Esta separación permite que cada servicio mantenga su propio estado y sea completamente independiente.
 
@@ -115,7 +115,7 @@ Terminal 1 - orders-service:
 .\run-orders.bat
 ```
 
-Terminal 2 - delivery-service:
+Terminal 2 - stock-service:
 ```bash
 .\run-delivery.bat
 ```
@@ -128,7 +128,7 @@ chmod +x run-orders.sh
 ./run-orders.sh
 ```
 
-Terminal 2 - delivery-service:
+Terminal 2 - stock-service:
 ```bash
 chmod +x run-delivery.sh
 ./run-delivery.sh
@@ -150,21 +150,21 @@ Linux/Mac:
 
 El servicio estará disponible en `http://localhost:8080`
 
-**Ejecutar delivery-service:**
+**Ejecutar stock-service:**
 
 En una terminal separada:
 
 Windows:
 ```bash
-.\mvnw.cmd quarkus:dev -pl delivery-service -Dquarkus.http.port=8081
+.\mvnw.cmd quarkus:dev -pl stock-service -Dquarkus.http.port=8081
 ```
 
 Linux/Mac:
 ```bash
-./mvnw quarkus:dev -pl delivery-service -Dquarkus.http.port=8081
+./mvnw quarkus:dev -pl stock-service -Dquarkus.http.port=8081
 ```
 
-**Nota**: El delivery-service está configurado para usar el puerto 8081 por defecto para evitar conflictos con orders-service.
+**Nota**: El stock-service está configurado para usar el puerto 8081 por defecto para evitar conflictos con orders-service.
 
 ### Ejecutar servicios desde sus directorios
 
@@ -184,17 +184,17 @@ cd orders-service
 ../mvnw quarkus:dev
 ```
 
-#### delivery-service
+#### stock-service
 
 **Windows:**
 ```bash
-cd delivery-service
+cd stock-service
 ..\mvnw.cmd quarkus:dev -Dquarkus.http.port=8081
 ```
 
 **Linux/Mac:**
 ```bash
-cd delivery-service
+cd stock-service
 ../mvnw quarkus:dev -Dquarkus.http.port=8081
 ```
 
@@ -233,10 +233,10 @@ Ejemplo de request:
 1. **orders-service** recibe una petición para crear una orden
 2. La orden se persiste en la base de datos de orders-service con estado `PENDING`
 3. Se publica un evento `OrderCreatedEvent` en el topic `createOrderService`
-4. **delivery-service** consume el evento del topic `createOrderService`
+4. **stock-service** consume el evento del topic `createOrderService`
 5. El servicio de delivery crea la orden en su propia base de datos (si no existe)
 6. El servicio de delivery valida el inventario
-7. Se actualiza el estado de la orden en la base de datos de delivery-service (ACCEPTED o DENIED)
+7. Se actualiza el estado de la orden en la base de datos de stock-service (ACCEPTED o DENIED)
 8. Se publica un evento `OrderValidatedEvent` en el topic `orderValidated`
 9. **orders-service** consume el evento del topic `orderValidated`
 10. Se actualiza el estado de la orden en la base de datos de orders-service (ACCEPTED o DENIED)
@@ -257,8 +257,8 @@ Cada servicio puede ejecutarse en modo desarrollo con recarga automática:
 cd orders-service
 ../mvnw quarkus:dev
 
-# Terminal 2 - delivery-service
-cd delivery-service
+# Terminal 2 - stock-service
+cd stock-service
 ../mvnw quarkus:dev
 ```
 
@@ -281,7 +281,7 @@ cd orders-service
 
 Ambos servicios exponen la consola H2 en:
 - orders-service: `http://localhost:8080/h2-console`
-- delivery-service: `http://localhost:8080/h2-console` (si se ejecuta en el mismo puerto, usar un puerto diferente)
+- stock-service: `http://localhost:8080/h2-console` (si se ejecuta en el mismo puerto, usar un puerto diferente)
 
 JDBC URL: `jdbc:h2:./target/h2db/orders` (o `delivery` según el servicio)
 Usuario: `sa`
@@ -314,7 +314,7 @@ Para una explicación detallada de la arquitectura, implementación y conceptos,
 - ✅ Ambos servicios están diseñados para ser **módulos independientes** y pueden ejecutarse por separado
 - ✅ Cada servicio tiene su **propia base de datos independiente** (H2)
 - ✅ El módulo delivery **crea automáticamente** las órdenes en su base de datos cuando recibe eventos si no existen
-- ✅ El módulo orders **actualiza automáticamente** el estado de las órdenes cuando recibe eventos de validación desde delivery-service
+- ✅ El módulo orders **actualiza automáticamente** el estado de las órdenes cuando recibe eventos de validación desde stock-service
 - ✅ El flujo completo es **asíncrono y basado en eventos**, permitiendo que los servicios se escalen independientemente
 - ✅ Los eventos se serializan/deserializan como **JSON** usando Jackson
 - ✅ Se implementa **idempotencia básica** para evitar procesamiento duplicado

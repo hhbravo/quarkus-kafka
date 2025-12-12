@@ -143,7 +143,7 @@
             </modules>
         </profile>
         
-        <!-- Perfil para ejecutar delivery-service -->
+        <!-- Perfil para ejecutar stock-service -->
         <profile>
             <id>delivery</id>
             <activation>
@@ -152,7 +152,7 @@
                 </property>
             </activation>
             <modules>
-                <module>delivery-service</module>
+                <module>stock-service</module>
             </modules>
         </profile>
         

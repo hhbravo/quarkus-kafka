@@ -24,7 +24,7 @@ public class OrderValidatedConsumer {
 
     /**
      * Consume messages from 'orderValidated' topic.
-     * Updates the order status based on the validation result from delivery-service.
+     * Updates the order status based on the validation result from stock-service.
      */
     @Incoming("order-validated-in")
     @Transactional
