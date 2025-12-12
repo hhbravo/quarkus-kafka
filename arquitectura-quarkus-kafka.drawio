@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36" version="29.2.7">
   <diagram id="arquitectura-quarkus-kafka" name="Arquitectura Quarkus Kafka">
-    <mxGraphModel dx="2697" dy="563" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+    <mxGraphModel dx="2826" dy="629" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -40,26 +40,23 @@
         <mxCell id="h2-orders" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11" value="H2 Database&#xa;orders&#xa;(./target/h2db/orders)" vertex="1">
           <mxGeometry height="80" width="60" x="640" y="330" as="geometry" />
         </mxCell>
-        <mxCell id="delivery-container" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=16;fontStyle=1" value="delivery-service" vertex="1">
+        <mxCell id="delivery-container" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=16;fontStyle=1" value="stock-service" vertex="1">
           <mxGeometry height="40" width="480" x="1040" y="280" as="geometry" />
         </mxCell>
-        <mxCell id="delivery-consumer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11" value="DelvieryConsumer&#xa;(Kafka Consumer)" vertex="1">
+        <mxCell id="delivery-consumer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11" value="StockConsumer&lt;br&gt;(Kafka Consumer)" vertex="1">
           <mxGeometry height="60" width="160" x="1060" y="340" as="geometry" />
         </mxCell>
-        <mxCell id="delivery-service" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11" value="DeliveryService&#xa;(Inventory Validation)" vertex="1">
+        <mxCell id="delivery-service" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11" value="StockService&lt;br&gt;(Inventory Validation)" vertex="1">
           <mxGeometry height="60" width="160" x="1390" y="340" as="geometry" />
-        </mxCell>
-        <mxCell id="delivery-order-repo" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11" value="DeliveryOrderRepository&#xa;(Panache)" vertex="1">
-          <mxGeometry height="60" width="160" x="1180" y="500" as="geometry" />
         </mxCell>
         <mxCell id="inventory-repo" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11" value="InventoryRepository&#xa;(Panache)" vertex="1">
           <mxGeometry height="60" width="160" x="1430" y="500" as="geometry" />
         </mxCell>
-        <mxCell id="delivery-producer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11" value="OrderValidatedProducer&#xa;(Kafka Producer)" vertex="1">
-          <mxGeometry height="60" width="180" x="960" y="520" as="geometry" />
+        <mxCell id="delivery-producer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11" value="StockValidatedProducer&lt;br&gt;(Kafka Producer)" vertex="1">
+          <mxGeometry height="60" width="180" x="1030" y="510" as="geometry" />
         </mxCell>
         <mxCell id="h2-delivery" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11" value="H2 Database&#xa;delivery&#xa;(./target/h2db/delivery)" vertex="1">
-          <mxGeometry height="80" width="60" x="1357" y="597" as="geometry" />
+          <mxGeometry height="80" width="60" x="1290" y="600" as="geometry" />
         </mxCell>
         <mxCell id="client" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1" value="Cliente HTTP" vertex="1">
           <mxGeometry height="40" width="120" x="110" y="90" as="geometry" />
@@ -114,33 +111,26 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge10" edge="1" parent="1" source="inventory-repo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#666666;endArrow=block;endFill=1" target="h2-delivery" value="">
+        <mxCell id="edge10" edge="1" parent="1" source="inventory-repo" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#666666;endArrow=block;endFill=1;curved=0;" target="h2-delivery" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1510" y="640" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge11" edge="1" parent="1" source="delivery-consumer" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#666666;endArrow=block;endFill=1;fontSize=10;curved=0;" target="delivery-order-repo" value="persist()">
+        <mxCell id="edge12" edge="1" parent="1" source="delivery-producer" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#666666;endArrow=block;endFill=1;curved=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="h2-delivery" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1200" y="450" />
-              <mxPoint x="1260" y="450" />
+              <mxPoint x="1120" y="640" />
             </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="edge12" edge="1" parent="1" source="delivery-order-repo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#666666;endArrow=block;endFill=1" target="h2-delivery" value="">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1260" y="640" />
-            </Array>
+            <mxPoint x="1260" y="560" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="edge13" edge="1" parent="1" source="delivery-consumer" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#666666;endArrow=block;endFill=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=0;" target="delivery-producer" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1090" y="460" />
-              <mxPoint x="1050" y="460" />
+              <mxPoint x="1140" y="460" />
+              <mxPoint x="1120" y="460" />
             </Array>
           </mxGeometry>
         </mxCell>

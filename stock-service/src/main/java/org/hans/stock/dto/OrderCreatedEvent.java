@@ -1,6 +1,4 @@
-package org.hans.delivery.dto;
-
-import io.quarkus.logging.Log;
+package org.hans.stock.dto;
 
 import java.time.Instant;
 import java.util.List;

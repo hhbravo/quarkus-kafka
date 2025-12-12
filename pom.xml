@@ -10,7 +10,7 @@
 
     <modules>
         <module>orders-service</module>
-        <module>delivery-service</module>
+        <module>stock-service</module>
     </modules>
 
     <properties>

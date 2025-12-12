@@ -1,9 +1,8 @@
-package org.hans.delivery.repository;
-
+package org.hans.stock.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import org.hans.delivery.entity.InventoryItem;
+import org.hans.stock.entity.InventoryItem;
 
 @ApplicationScoped
 public class InventoryRepository implements PanacheRepository<InventoryItem> {

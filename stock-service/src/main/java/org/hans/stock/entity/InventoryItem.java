@@ -1,4 +1,4 @@
-package org.hans.delivery.entity;
+package org.hans.stock.entity;
 
 import jakarta.persistence.*;
 

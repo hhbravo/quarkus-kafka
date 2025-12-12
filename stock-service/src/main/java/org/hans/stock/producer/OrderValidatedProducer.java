@@ -1,11 +1,11 @@
-package org.hans.delivery.producer;
+package org.hans.stock.producer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
-import org.hans.delivery.dto.OrderValidatedEvent;
+import org.hans.stock.dto.OrderValidatedEvent;
 
 @ApplicationScoped
 public class OrderValidatedProducer {

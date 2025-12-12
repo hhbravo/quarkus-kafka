@@ -1,5 +1,4 @@
-package org.hans.delivery.entity;
-
+package org.hans.stock.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.CascadeType;

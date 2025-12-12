@@ -1,4 +1,4 @@
-package org.hans.delivery.dto;
+package org.hans.stock.dto;
 
 import java.time.Instant;
 
