@@ -3,3 +3,5 @@
 !target/*-runner.jar
 !target/lib/*
 !target/quarkus-app/*
+BLOG_POST.md
+BUILD.md
